@@ -1,3 +1,5 @@
+using Elevator.Api.Context;
+using Elevator.Api.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,13 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elevator.Api
 {
     public class Startup
     {
         private readonly IConfiguration configuration;
-
 
         public Startup(IConfiguration configuration)
         {
@@ -26,6 +28,9 @@ namespace Elevator.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Elevator.Api", Version = "v1" });
             });
+
+            services.AddDbContext<DatabaseContext>(ServiceLifetime.Transient);
+
         }
 
         [UsedImplicitly]
