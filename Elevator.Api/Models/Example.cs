@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Elevator.Api.Models
 {
-    public class ExampleDB
+
+    [Table("example")]
+    public class Example
     {
         [Key]
         public Guid Id { get; set; }

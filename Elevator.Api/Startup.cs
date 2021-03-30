@@ -29,7 +29,7 @@ namespace Elevator.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Elevator.Api", Version = "v1" });
             });
 
-            services.AddDbContext<DatabaseContext>(ServiceLifetime.Transient);
+            services.AddDbContext<DatabaseContext>();
 
         }
 

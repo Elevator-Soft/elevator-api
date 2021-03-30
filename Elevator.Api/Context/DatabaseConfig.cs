@@ -18,15 +18,15 @@ namespace Elevator.Api.Context
 
     internal class PostgresConfig
     {
-        public string Host { get; set; }
+        public string Server { get; set; }
         public string Port { get; set; }
         public string Database { get; set; }
-        public string Username { get; set; }
+        public string UserId { get; set; }
         public string Password { get; set; }
 
         public override string ToString()
         {
-            return $"host={Host};port={Port};database={Database};username={Username};password={Password};";
+            return $"Server={Server};Database={Database};User Id={UserId};Password={Password};Port={Port};";
         }
     }
 }

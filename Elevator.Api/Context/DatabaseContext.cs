@@ -5,8 +5,12 @@ namespace Elevator.Api.Context
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<ExampleDB> example { get; set; }
+        public DbSet<Example> example { get; set; }
 
+        public DatabaseContext()
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

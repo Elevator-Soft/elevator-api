@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Elevator.Api.Context;
 using Elevator.Api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,12 @@ namespace Elevator.Api.Controllers
             this.dbContext = dbContext;
         }
         [Route("example")]
-        public Guid Index()
+        public async Task<Guid> Index()
         {
-            var id = Guid.Parse("0daa5ab6-cdc7-458c-9413-07579441190c");
-            dbContext.example.Add(new ExampleDB {Id = id});
-            return dbContext.example.Find(id).Id;
+            var id = Guid.NewGuid();
+            await dbContext.example.AddAsync(new Example {Id = id});
+            await dbContext.SaveChangesAsync();
+            return id;
         }
     }
 }
