@@ -13,6 +13,11 @@ namespace Repositories.Database
             connectionString = configuration.GetConnectionString("Postgres");
         }
 
+        public DatabaseContext(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
         public DbSet<Example> Example { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

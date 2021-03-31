@@ -18,9 +18,9 @@ namespace Elevator.Api.Controllers
         }
 
         [Route("example")]
-        public async Task<int> Index()
+        public async Task<Guid> Index()
         {
-            var id = new Random().Next();
+            var id = Guid.NewGuid();
             await repository.AddAsync(new Example());
             return id;
         }
