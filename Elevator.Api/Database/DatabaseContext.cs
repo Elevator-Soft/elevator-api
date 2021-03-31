@@ -1,23 +1,15 @@
-﻿using Elevator.Api.Models;
+﻿using Elevator.Api.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Elevator.Api.Context
+namespace Elevator.Api.Database
 {
-    public class DatabaseContext : DbContext
+    public sealed class DatabaseContext : DbContext
     {
-        public DbSet<Example> example { get; set; }
+        public DbSet<Example> Example { get; set; }
 
-        public DatabaseContext()
+        public DatabaseContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
-        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var dbConfig = new DatabaseConfig();
-            var config = dbConfig.ReadConfig();
-            if (config != null)
-                optionsBuilder.UseNpgsql(config);
         }
     }
 }

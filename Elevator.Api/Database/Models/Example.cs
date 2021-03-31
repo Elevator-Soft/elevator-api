@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Elevator.Api.Models
+namespace Elevator.Api.Database.Models
 {
 
     [Table("example")]

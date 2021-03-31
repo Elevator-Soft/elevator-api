@@ -1,5 +1,4 @@
-using Elevator.Api.Context;
-using Elevator.Api.Controllers;
+using Elevator.Api.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,10 +25,10 @@ namespace Elevator.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Elevator.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Elevator.Api", Version = "v1"});
             });
 
-            services.AddDbContext<DatabaseContext>();
+            services.AddDbContext<DatabaseContext>(x => x.UseNpgsql(configuration.GetConnectionString("Postgres")));
 
         }
 

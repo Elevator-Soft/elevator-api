@@ -1,4 +1,3 @@
-config/
 *.swp
 *.*~
 project.lock.json
