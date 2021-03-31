@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Elevator.Api.Database;
-using Elevator.Api.Database.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repositories.Database.Models;
+using Repositories.Repositories;
 
 namespace Elevator.Api.Controllers
 {
@@ -10,19 +10,18 @@ namespace Elevator.Api.Controllers
     [Route("Example")]
     public class ExampleController : Controller
     {
-        private readonly DatabaseContext dbContext;
+        private readonly ExampleRepository repository;
 
-        public ExampleController(DatabaseContext dbContext)
+        public ExampleController(ExampleRepository repository)
         {
-            this.dbContext = dbContext;
+            this.repository = repository;
         }
 
         [Route("example")]
-        public async Task<Guid> Index()
+        public async Task<int> Index()
         {
-            var id = Guid.NewGuid();
-            await dbContext.Example.AddAsync(new Example {Id = id});
-            await dbContext.SaveChangesAsync();
+            var id = new Random().Next();
+            await repository.AddAsync(new Example());
             return id;
         }
     }
