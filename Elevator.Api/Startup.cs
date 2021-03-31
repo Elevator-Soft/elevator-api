@@ -1,3 +1,4 @@
+using Elevator.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +34,9 @@ namespace Elevator.Api
                 .AddEntityFrameworkNpgsql()
                 .AddDbContext<DatabaseContext>();
 
-            services.AddScoped<ExampleRepository>();
+            services.AddScoped<ProjectsRepository>();
+
+            services.AddScoped<ProjectsService>();
 
         }
 
