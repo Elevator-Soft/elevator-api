@@ -1,4 +1,4 @@
-using Elevator.Api.Database;
+using Elevator.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
+using Repositories.Database;
+using Repositories.Repositories;
 
 namespace Elevator.Api
 {
@@ -28,7 +29,13 @@ namespace Elevator.Api
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Elevator.Api", Version = "v1"});
             });
 
-            services.AddDbContext<DatabaseContext>(x => x.UseNpgsql(configuration.GetConnectionString("Postgres")));
+            services
+                .AddEntityFrameworkNpgsql()
+                .AddDbContext<DatabaseContext>();
+
+            services.AddScoped<ProjectRepository>();
+
+            services.AddScoped<ProjectService>();
 
         }
 
