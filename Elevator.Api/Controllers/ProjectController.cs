@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Elevator.Api.Models;
 using Elevator.Api.Services;
+using Elevator.Api.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Elevator.Api.Controllers
@@ -16,11 +18,12 @@ namespace Elevator.Api.Controllers
             this.projectService = projectService;
         }
 
+        [HttpPost]
         [Route("create")]
-        public async Task<Guid> Create()
+        public async Task<OperationResult<Project>> Create([FromBody] CreateProjectRequest createProjectRequest)
         {
-            var result = await projectService.CreateAsync();
-            return result.Id;
+            var project = await projectService.CreateAsync(createProjectRequest);
+            return OperationResult<Project>.Created(project);
         }
     }
 }
