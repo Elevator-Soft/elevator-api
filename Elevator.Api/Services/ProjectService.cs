@@ -4,11 +4,11 @@ using Repositories.Repositories;
 
 namespace Elevator.Api.Services
 {
-    public class ProjectsService : IProjectsService
+    public class ProjectService : IProjectService
     {
-        private readonly ProjectsRepository repository;
+        private readonly ProjectRepository repository;
 
-        public ProjectsService(ProjectsRepository repository)
+        public ProjectService(ProjectRepository repository)
         {
             this.repository = repository;
         }

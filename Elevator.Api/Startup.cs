@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
 using Repositories.Database;
 using Repositories.Repositories;
 
@@ -34,9 +33,9 @@ namespace Elevator.Api
                 .AddEntityFrameworkNpgsql()
                 .AddDbContext<DatabaseContext>();
 
-            services.AddScoped<ProjectsRepository>();
+            services.AddScoped<ProjectRepository>();
 
-            services.AddScoped<ProjectsService>();
+            services.AddScoped<ProjectService>();
 
         }
 

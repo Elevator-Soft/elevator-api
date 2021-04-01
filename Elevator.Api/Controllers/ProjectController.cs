@@ -9,17 +9,17 @@ namespace Elevator.Api.Controllers
     [Route("Project")]
     public class ProjectController : Controller
     {
-        private readonly IProjectsService projectsService;
+        private readonly IProjectService projectService;
 
-        public ProjectController(ProjectsService projectsService)
+        public ProjectController(IProjectService projectService)
         {
-            this.projectsService = projectsService;
+            this.projectService = projectService;
         }
 
         [Route("create")]
         public async Task<Guid> Create()
         {
-            var result = await projectsService.CreateAsync();
+            var result = await projectService.CreateAsync();
             return result.Id;
         }
     }

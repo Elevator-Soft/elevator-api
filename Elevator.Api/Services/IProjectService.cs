@@ -3,7 +3,7 @@ using Repositories.Database.Models;
 
 namespace Elevator.Api.Services
 {
-    interface IProjectsService
+    public interface IProjectService
     {
         Task<Example> CreateAsync();
     }
