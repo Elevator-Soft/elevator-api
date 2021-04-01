@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Elevator.Api.Dto;
 using Elevator.Api.Models;
 using Elevator.Api.Services;
 using Elevator.Api.Utils;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Elevator.Api.Controllers
 {
     [ApiController]
-    [Route("Project")]
+    [Route("project")]
     public class ProjectController : Controller
     {
         private readonly IProjectService projectService;
@@ -20,10 +20,15 @@ namespace Elevator.Api.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<OperationResult<Project>> Create([FromBody] CreateProjectRequest createProjectRequest)
+        public async Task<OperationResult<CreateProjectResultDto>> Create([FromBody] CreateProjectRequestDto createProjectRequestDto)
         {
-            var project = await projectService.CreateAsync(createProjectRequest);
-            return OperationResult<Project>.Created(project);
+            var project = await projectService.CreateAsync(createProjectRequestDto.ToServiceProject());
+            var resultDto = new CreateProjectResultDto
+            {
+                Id = project.Id
+            };
+
+            return OperationResult<CreateProjectResultDto>.Created(resultDto);
         }
     }
 }

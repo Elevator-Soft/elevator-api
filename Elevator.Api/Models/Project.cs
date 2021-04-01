@@ -6,5 +6,7 @@ namespace Elevator.Api.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public Uri ProjectUri { get; set; }
+        public string GitToken { get; set; }
     }
 }

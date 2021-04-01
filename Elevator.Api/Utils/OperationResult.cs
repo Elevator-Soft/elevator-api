@@ -28,6 +28,13 @@ namespace Elevator.Api.Utils
             Error = $"Bad request. Error message: {errorMessage}"
         };
 
+        public static OperationResult<T> Forbidden(string errorMessage = "") => new OperationResult<T>
+        {
+            IsSuccessful = false,
+            HttpStatusCode = HttpStatusCode.Forbidden,
+            Error = $"Forbidden. Error message: {errorMessage}"
+        };
+
         public static OperationResult<T> NotFound(string errorMessage = "") => new OperationResult<T>
         {
             IsSuccessful = false,

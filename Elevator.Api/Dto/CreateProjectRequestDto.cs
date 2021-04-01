@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Elevator.Api.Models
+namespace Elevator.Api.Dto
 {
-    public class CreateProjectRequest
+    public class CreateProjectRequestDto
     {
         public string Name { get; set; }
         public Uri ProjectUri { get; set; }
