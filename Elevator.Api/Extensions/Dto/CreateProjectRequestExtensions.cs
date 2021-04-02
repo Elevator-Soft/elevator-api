@@ -1,6 +1,7 @@
-﻿using Elevator.Api.Models;
+﻿using Elevator.Api.Dto;
+using Elevator.Api.Models;
 
-namespace Elevator.Api.Dto
+namespace Elevator.Api.Extensions.Dto
 {
     public static class CreateProjectRequestExtensions
     {

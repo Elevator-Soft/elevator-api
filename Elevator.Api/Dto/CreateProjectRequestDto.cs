@@ -1,7 +1,9 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Elevator.Api.Dto
 {
+    [JsonObject]
     public class CreateProjectRequestDto
     {
         public string Name { get; set; }

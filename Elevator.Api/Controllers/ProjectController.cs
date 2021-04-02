@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Elevator.Api.Dto;
-using Elevator.Api.Models;
+using Elevator.Api.Extensions.Dto;
 using Elevator.Api.Services;
 using Elevator.Api.Utils;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Project = Elevator.Api.Models.Project;
+using Elevator.Api.Models;
 
 namespace Elevator.Api.Services
 {

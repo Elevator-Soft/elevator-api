@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Elevator.Api.Dto;
 using Elevator.Api.Models;
+using Elevator.Api.Utils.Mapper;
 using Repositories.Repositories;
-using Project = Elevator.Api.Models.Project;
 
 namespace Elevator.Api.Services
 {
@@ -17,25 +16,9 @@ namespace Elevator.Api.Services
 
         public async Task<Project> CreateAsync(Project project)
         {
-            var dbProject = await repository.AddAsync(ConvertServiceModelToDbModel(project));
-            return ConvertDbModelToServiceModel(dbProject);
+            var dbProject = await repository.AddAsync(ModelsMapper.ConvertProjectServiceModelToDbModel(project));
+            return ModelsMapper.ConvertProjectDbModelToServiceModel(dbProject);
         }
 
-        public Project ConvertDbModelToServiceModel(Repositories.Database.Models.Project dbProject) => new Project
-        {
-            Id = dbProject.Id,
-            Name = dbProject.Name,
-            GitToken = dbProject.GitToken,
-            ProjectUri = dbProject.ProjectUri
-        };
-
-
-        public Repositories.Database.Models.Project ConvertServiceModelToDbModel(Project project) => new Repositories.Database.Models.Project
-        {
-            Id = project.Id,
-            Name = project.Name,
-            GitToken = project.GitToken,
-            ProjectUri = project.ProjectUri
-        };
     }
 }
