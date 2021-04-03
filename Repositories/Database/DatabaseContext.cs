@@ -17,8 +17,7 @@ namespace Repositories.Database
         {
             this.connectionString = connectionString;
         }
-
-        public DbSet<Example> Example { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

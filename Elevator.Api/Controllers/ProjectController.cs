@@ -1,12 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Elevator.Api.Dto;
+using Elevator.Api.Extensions.Dto;
 using Elevator.Api.Services;
+using Elevator.Api.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Elevator.Api.Controllers
 {
     [ApiController]
-    [Route("Project")]
+    [Route("project")]
     public class ProjectController : Controller
     {
         private readonly IProjectService projectService;
@@ -16,11 +18,17 @@ namespace Elevator.Api.Controllers
             this.projectService = projectService;
         }
 
+        [HttpPost]
         [Route("create")]
-        public async Task<Guid> Create()
+        public async Task<OperationResult<CreateProjectResultDto>> Create([FromBody] CreateProjectRequestDto createProjectRequestDto)
         {
-            var result = await projectService.CreateAsync();
-            return result.Id;
+            var project = await projectService.CreateAsync(createProjectRequestDto.ToServiceProject());
+            var resultDto = new CreateProjectResultDto
+            {
+                Id = project.Id
+            };
+
+            return OperationResult<CreateProjectResultDto>.Created(resultDto);
         }
     }
 }

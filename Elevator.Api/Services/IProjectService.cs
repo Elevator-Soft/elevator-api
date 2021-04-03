@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Repositories.Database.Models;
+using Elevator.Api.Models;
 
 namespace Elevator.Api.Services
 {
     public interface IProjectService
     {
-        Task<Example> CreateAsync();
+        Task<Project> CreateAsync(Project project);
     }
 }

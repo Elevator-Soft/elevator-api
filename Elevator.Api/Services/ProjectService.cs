@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Repositories.Database.Models;
+using Elevator.Api.Models;
+using Elevator.Api.Utils.Mapper;
 using Repositories.Repositories;
 
 namespace Elevator.Api.Services
@@ -13,9 +14,11 @@ namespace Elevator.Api.Services
             this.repository = repository;
         }
 
-        public async Task<Example> CreateAsync()
+        public async Task<Project> CreateAsync(Project project)
         {
-            return await repository.AddAsync(new Example());
+            var dbProject = await repository.AddAsync(ModelsMapper.ConvertProjectServiceModelToDbModel(project));
+            return ModelsMapper.ConvertProjectDbModelToServiceModel(dbProject);
         }
+
     }
 }
