@@ -1,3 +1,4 @@
+using Elevator.Api.Configuration;
 using Elevator.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,8 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Repositories.Database;
 using Repositories.Repositories;
+using Elevator.Api.Middlewares;
 
 namespace Elevator.Api
 {
@@ -29,14 +32,33 @@ namespace Elevator.Api
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Elevator.Api", Version = "v1"});
             });
 
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
             services
                 .AddEntityFrameworkNpgsql()
                 .AddDbContext<DatabaseContext>();
 
             services.AddScoped<ProjectRepository>();
 
-            services.AddScoped<ProjectService>();
+            services.AddScoped<IProjectService, ProjectService>();
 
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                    options =>
+                    {
+                        var jwtConfiguration = configuration.GetSection("Bearer").Get<JwtBearerConfiguration>();
+                        options.Authority = jwtConfiguration.Authority;
+                        options.Audience = jwtConfiguration.Audience;
+                    });
+
+            services.AddSingleton<HandleExceptionsMiddleware>();
         }
 
         [UsedImplicitly]
@@ -49,12 +71,17 @@ namespace Elevator.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Elevator.Api v1"));
             }
 
+            app.UseCors(builder => builder.AllowAnyOrigin());
+
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 
-            //todo(likvidator): пока нет
-            //app.UseAuthorization();
+            app.UseAuthorization();
+
+            app.UseMiddleware<HandleExceptionsMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

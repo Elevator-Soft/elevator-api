@@ -24,6 +24,8 @@ namespace Elevator.Api
 
         private static void ConfigureLogging(ILoggingBuilder loggingBuilder)
         {
+            loggingBuilder.ClearProviders();
+
             loggingBuilder.AddConsole();
         }
     }
