@@ -26,7 +26,7 @@ namespace Elevator.Api.Middlewares
                 switch (apiException.StatusCode)
                 {
                     case HttpStatusCode.InternalServerError:
-                        var error = OperationResult<Unit>.InternalServerError(apiException.Message);
+                        var error = VoidOperationResult.InternalServerError(apiException.Message);
                         await WriteErrorAsync(context, error);
                         break;
                     //todo(likvidator): сделать без свитча 
@@ -34,12 +34,12 @@ namespace Elevator.Api.Middlewares
             }
             catch (Exception e)
             {
-                var error = OperationResult<Unit>.InternalServerError(e.Message);
+                var error = VoidOperationResult.InternalServerError(e.Message);
                 await WriteErrorAsync(context, error);
             }
         }
 
-        private static Task WriteErrorAsync(HttpContext httpContext, OperationResult<Unit> result)
+        private static Task WriteErrorAsync(HttpContext httpContext, VoidOperationResult result)
         {
             httpContext.Response.Headers[HeaderNames.CacheControl] = "no-cache, no-store, must-revalidate";
             httpContext.Response.Headers[HeaderNames.Pragma] = "no-cache";
