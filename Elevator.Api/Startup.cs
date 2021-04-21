@@ -1,3 +1,4 @@
+using System;
 using Elevator.Api.Configuration;
 using Elevator.Api.Services;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Repositories.Database;
 using Repositories.Repositories;
 using Elevator.Api.Middlewares;
+using Git;
+using Microsoft.Extensions.Logging;
 
 namespace Elevator.Api
 {
@@ -25,7 +28,11 @@ namespace Elevator.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.UseCamelCasing(true);
+                });
 
             services.AddSwaggerGen(c =>
             {
@@ -33,9 +40,10 @@ namespace Elevator.Api
             });
 
             services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-            });
+                {
+                    c.AddPolicy("AllowOrigin",
+                        options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                });
 
             services
                 .AddEntityFrameworkNpgsql()
@@ -44,6 +52,8 @@ namespace Elevator.Api
             services.AddScoped<ProjectRepository>();
 
             services.AddScoped<IProjectService, ProjectService>();
+
+            services.AddLogging();
 
             services.AddAuthentication(options =>
                 {
@@ -71,8 +81,6 @@ namespace Elevator.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Elevator.Api v1"));
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin());
-
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
@@ -82,6 +90,8 @@ namespace Elevator.Api
             app.UseAuthorization();
 
             app.UseMiddleware<HandleExceptionsMiddleware>();
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseEndpoints(endpoints =>
             {

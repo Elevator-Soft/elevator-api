@@ -1,30 +1,44 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Elevator.Api.Dto;
 using Elevator.Api.Extensions.Dto;
+using Elevator.Api.Models;
 using Elevator.Api.Services;
 using Elevator.Api.Utils;
+using Elevator.Api.Utils.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace Elevator.Api.Controllers
 {
     [ApiController]
-    [Route("project")]
+    [Route("projects")]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService projectService;
+        private readonly ILogger<ProjectController> logger;
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IProjectService projectService, ILogger<ProjectController> logger)
         {
             this.projectService = projectService;
+            this.logger = logger;
         }
 
         [HttpPost]
-        [Route("create")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<CreateProjectResultDto>> Create([FromBody] CreateProjectRequestDto createProjectRequestDto)
+        public async Task<OperationResult<CreateProjectResultDto>> CreateAsync([FromBody] CreateProjectRequestDto createProjectRequestDto)
         {
+            logger.LogInformation($"Start execution method '{nameof(CreateAsync)}'");
+            logger.LogInformation($"CreateProjectRequestDto: '{createProjectRequestDto}'");
+
+            if (!createProjectRequestDto.ProjectUri.ToString().StartsWith("https://"))
+                return OperationResult<CreateProjectResultDto>.BadRequest("Elevator only support git url witch starts with 'https://'");
+
             var project = await projectService.CreateAsync(createProjectRequestDto.ToServiceProject());
             var resultDto = new CreateProjectResultDto
             {
@@ -32,6 +46,16 @@ namespace Elevator.Api.Controllers
             };
 
             return OperationResult<CreateProjectResultDto>.Created(resultDto);
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<OperationResult<List<ProjectDto>>> GetAllAsync()
+        {
+            logger.LogInformation($"Start execution method '{nameof(GetAllAsync)}'");
+            var projects = await projectService.GetAllAsync();
+            var dtoModels = projects.Select(ModelsMapper.ConvertProjectServiceModelToDtoModel).ToList();
+            return OperationResult<List<ProjectDto>>.Ok(dtoModels);
         }
     }
 }

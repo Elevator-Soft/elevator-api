@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Database;
 
 namespace Repositories.Repositories
@@ -7,10 +10,12 @@ namespace Repositories.Repositories
         where T : class
     {
         protected readonly DatabaseContext DbContext;
+        protected readonly DbSet<T> DbSet;
 
-        protected AbstractRepository(DatabaseContext dbContext)
+        protected AbstractRepository(DatabaseContext dbContext, DbSet<T> dbSet)
         {
             DbContext = dbContext;
+            DbSet = dbSet;
         }
 
         public virtual async Task<T> AddAsync(T entity)
@@ -38,5 +43,9 @@ namespace Repositories.Repositories
             return entity;
         }
 
+        public virtual Task<List<T>> GetAllAsync()
+        {
+            return DbSet.ToListAsync();
+        }
     }
 }

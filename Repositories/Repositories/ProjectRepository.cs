@@ -5,7 +5,7 @@ namespace Repositories.Repositories
 {
     public class ProjectRepository : AbstractRepository<Project>
     {
-        public ProjectRepository(DatabaseContext dbContext) : base(dbContext)
+        public ProjectRepository(DatabaseContext dbContext) : base(dbContext, dbContext.Projects)
         {
         }
     }
