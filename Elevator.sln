@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elevator.Api", "Elevator.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{BF6749EF-BEDE-4056-9463-85DA9C92126F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell", "ShellRunner\Shell.csproj", "{7B3AFB77-FB84-4495-AA15-7B80423BF56E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell", "ShellRunner\Shell.csproj", "{7B3AFB77-FB84-4495-AA15-7B80423BF56E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Git", "Git\Git.csproj", "{2DBBF7F8-262C-49D6-B014-B87ECE4BE043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Git", "Git\Git.csproj", "{2DBBF7F8-262C-49D6-B014-B87ECE4BE043}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{D6A42AA8-92C9-4681-A414-9C36419600A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{F7B605E7-1543-4AC9-9521-87320EE44AFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{2DBBF7F8-262C-49D6-B014-B87ECE4BE043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DBBF7F8-262C-49D6-B014-B87ECE4BE043}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DBBF7F8-262C-49D6-B014-B87ECE4BE043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7B605E7-1543-4AC9-9521-87320EE44AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7B605E7-1543-4AC9-9521-87320EE44AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7B605E7-1543-4AC9-9521-87320EE44AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7B605E7-1543-4AC9-9521-87320EE44AFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

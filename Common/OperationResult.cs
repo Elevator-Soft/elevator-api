@@ -1,13 +1,13 @@
 ﻿using System.Net;
 
-namespace Elevator.Api.Utils
+namespace Common
 {
     public class OperationResult<T>
     {
-        public T Value { get; set; }
-        public bool IsSuccessful { get; set; } = true;
-        public HttpStatusCode HttpStatusCode { get; set; }
-        public string Error { get; set; }
+        public T Value { get; private init; }
+        public bool IsSuccessful { get; private init; } = true;
+        public HttpStatusCode HttpStatusCode { get; private init; }
+        public string Error { get; private init; }
 
         public static OperationResult<T> CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) => new OperationResult<T>
         {

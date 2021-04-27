@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Git.Exceptions;
+using Common;
 using Microsoft.Extensions.Logging;
 using Shell;
 
@@ -18,52 +18,38 @@ namespace Git
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task CheckoutAsync(string branch)
+        public async Task<VoidOperationResult> CheckoutAsync(string branch)
         {
             using var scope = logger.BeginScope("Checkout");
 
             var shellRunnerArgs = new ShellRunnerArgs(Directory, "git", "checkout", branch);
             var shellRunner = new ShellRunner(shellRunnerArgs);
 
-            int exitCode;
-            try
-            {
-                exitCode = await shellRunner.RunAsync();
-            }
-            catch (Exception e)
-            {
-                throw new CheckoutException(e);
-            }
+            var checkoutProcessResult = await shellRunner.RunAsync();
 
-            if (exitCode != 0)
-                throw new CheckoutException(await shellRunner.ErrorStream.ReadToEndAsync());
+            if (!checkoutProcessResult.IsSuccessful)
+                return VoidOperationResult.InternalServerError(checkoutProcessResult.Error);
 
-            logger.LogInformation(await shellRunner.ErrorStream.ReadToEndAsync());
+            logger.LogInformation(await checkoutProcessResult.Value.Error.ReadToEndAsync());
+
+            return VoidOperationResult.Ok();
         }
 
-        public async Task<string> GetCommitHashAsync()
+        public async Task<OperationResult<string>> GetCommitHashAsync()
         {
             using var scope = logger.BeginScope("Get commit hash");
 
             var shellRunnerArgs = new ShellRunnerArgs(Directory, "git", "rev-parse", "HEAD");
             var shellRunner = new ShellRunner(shellRunnerArgs);
 
-            int exitCode;
-            try
-            {
-                exitCode = await shellRunner.RunAsync();
-            }
-            catch (Exception e)
-            {
-                throw new GetCommitHashException(e);
-            }
+            var getCommitHashProcessResult = await shellRunner.RunAsync();
 
-            if (exitCode != 0)
-                throw new GetCommitHashException(await shellRunner.ErrorStream.ReadToEndAsync());
+            if (!getCommitHashProcessResult.IsSuccessful)
+                return OperationResult<string>.InternalServerError(getCommitHashProcessResult.Error);
 
-            var commitHash = await shellRunner.OutputStream.ReadToEndAsync();
+            logger.LogInformation(await getCommitHashProcessResult.Value.Error.ReadToEndAsync());
 
-            return commitHash;
+            return OperationResult<string>.Ok(await getCommitHashProcessResult.Value.Output.ReadToEndAsync());
         }
     }
 }

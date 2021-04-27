@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Shell.Exceptions;
+using Common;
 
 namespace Shell
 {
@@ -11,37 +10,12 @@ namespace Shell
     {
         private readonly ShellRunnerArgs args;
 
-        public StreamReader OutputStream
-        {
-            get
-            {
-                if (outputStream == null)
-                    throw new ProcessNotStartedYetException("Output stream does not exist yet");
-
-                return outputStream;
-            }
-        }
-
-        public StreamReader ErrorStream
-        {
-            get
-            {
-                if (errorStream == null)
-                    throw new ProcessNotStartedYetException("Error stream does not exist yet");
-
-                return errorStream;
-            }
-        }
-
-        private StreamReader outputStream;
-        private StreamReader errorStream;
-
         public ShellRunner(ShellRunnerArgs args)
         {
             this.args = args ?? throw new ArgumentNullException(nameof(args));
         }
 
-        public async Task<int> RunAsync(CancellationToken cancellationToken = default)
+        public async Task<OperationResult<ShellProcess>> RunAsync(CancellationToken cancellationToken = default)
         {
             var processStartInfo = new ProcessStartInfo(args.Command, string.Join(' ', args.Arguments))
             {
@@ -53,30 +27,32 @@ namespace Shell
             var process = Process.Start(processStartInfo);
 
             if (process == null)
-                throw new CannotStartProcessException($"Shell runner args:\n{args}'");
-
-            outputStream = process.StandardOutput;
-            errorStream = process.StandardError;
+                return OperationResult<ShellProcess>.InternalServerError($"Process not started. Args: {this.args}");
 
             await process.WaitForExitAsync(cancellationToken);
 
-            return process.ExitCode;
+            if (process.ExitCode != 0)
+                return OperationResult<ShellProcess>.InternalServerError($"Exit code = {process.ExitCode}\n" + 
+                                                                         $"Output: {await process.StandardOutput.ReadToEndAsync()}\n" + 
+                                                                         $"Error: {await process.StandardError.ReadToEndAsync()}");
+
+            return OperationResult<ShellProcess>.Ok(new ShellProcess(process.StandardOutput, process.StandardError));
         }
 
-        public async Task<int> RunWithRetryAsync(int retryCount, CancellationToken cancellationToken = default)
+        public async Task<OperationResult<ShellProcess>> RunWithRetryAsync(int retryCount, CancellationToken cancellationToken = default)
         {
-            var exitCode = await RunAsync(cancellationToken);
-            if (exitCode == 0)
-                return exitCode;
+            var processResult = await RunAsync(cancellationToken);
+            if (processResult.IsSuccessful)
+                return processResult;
 
             for (var i = 1; i < retryCount; i++)
             {
-                exitCode = await RunAsync(cancellationToken);
-                if (exitCode == 0)
-                    return exitCode;
+                processResult = await RunAsync(cancellationToken);
+                if (processResult.IsSuccessful)
+                    return processResult;
             }
 
-            return exitCode;
+            return processResult;
         }
     }
 }

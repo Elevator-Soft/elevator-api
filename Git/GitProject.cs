@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Git.Exceptions;
+using Common;
 using Microsoft.Extensions.Logging;
 using Shell;
 
@@ -17,15 +15,17 @@ namespace Git
         private readonly ILogger<GitProject> logger;
         private readonly ILoggerFactory loggerFactory;
 
-        public GitProject(GitProjectInformation gitProjectInformation, ILogger<GitProject> logger, ILoggerFactory loggerFactory)
+        public GitProject(GitProjectInformation gitProjectInformation, ILoggerFactory loggerFactory)
         {
             this.gitProjectInformation = gitProjectInformation ?? throw new ArgumentNullException(nameof(gitProjectInformation));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            this.logger = loggerFactory.CreateLogger<GitProject>();
         }
 
-        public async Task<GitRepository> CloneAsync(CancellationToken cancellationToken = default)
+        public async Task<OperationResult<GitRepository>> CloneAsync(CancellationToken cancellationToken = default)
         {
+            using var scope = logger.BeginScope("Clone");
+
             var arguments = new List<string>
             {
                 "clone",
@@ -39,24 +39,18 @@ namespace Git
 
             var shellRunner = new ShellRunner(new ShellRunnerArgs(gitProjectInformation.WorkingDirectory, "git", arguments.ToArray()));
 
-            try
-            {
-                var exitCode = await shellRunner.RunAsync(cancellationToken);
-                if (exitCode != 0)
-                    throw new CloneException(await shellRunner.ErrorStream.ReadToEndAsync());
-            }
-            catch (Exception e)
-            {
-                throw new CloneException(e);
-            }
+            var cloneProcessResult = await shellRunner.RunAsync(cancellationToken);
+            
+            if (!cloneProcessResult.IsSuccessful)
+                return OperationResult<GitRepository>.InternalServerError(cloneProcessResult.Error);
 
-            logger.LogInformation(await shellRunner.ErrorStream.ReadToEndAsync());
-            logger.LogInformation(await shellRunner.OutputStream.ReadToEndAsync());
+            logger.LogInformation(await cloneProcessResult.Value.Error.ReadToEndAsync());
+            logger.LogInformation(await cloneProcessResult.Value.Output.ReadToEndAsync());
 
             var repositoryDirectory = Path.Combine(gitProjectInformation.WorkingDirectory,
                 gitProjectInformation.TargetDirectory);
             
-            return new GitRepository(repositoryDirectory, loggerFactory.CreateLogger<GitRepository>());
+            return OperationResult<GitRepository>.Ok(new GitRepository(repositoryDirectory, loggerFactory.CreateLogger<GitRepository>()));
         }
 
         private string GetUrlWithAccessToken()
