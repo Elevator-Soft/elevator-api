@@ -1,4 +1,5 @@
-﻿using Elevator.Api.Models;
+﻿using Elevator.Api.Dto;
+using Elevator.Api.Models;
 
 namespace Elevator.Api.Utils.Mapper
 {
@@ -19,6 +20,12 @@ namespace Elevator.Api.Utils.Mapper
             Name = project.Name,
             GitToken = project.GitToken,
             ProjectUri = project.ProjectUri
+        };
+
+        public static ProjectDto ConvertProjectServiceModelToDtoModel(Project project) => new ProjectDto
+        {
+            Id = project.Id,
+            Name = project.Name
         };
     }
 }

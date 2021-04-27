@@ -1,15 +1,14 @@
 ﻿using System.Net;
 
-namespace Elevator.Api.Utils
+namespace Common
 {
     public class VoidOperationResult
     {
-        public bool IsSuccessful { get; set; } = true;
-        public HttpStatusCode HttpStatusCode { get; set; }
-        public string Error { get; set; }
+        public bool IsSuccessful { get; private init; } = true;
+        public HttpStatusCode HttpStatusCode { get; private init; }
+        public string Error { get; private init; }
 
-        public static VoidOperationResult
-            CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) => new VoidOperationResult
+        public static VoidOperationResult CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) => new VoidOperationResult
         {
             IsSuccessful = false,
             HttpStatusCode = httpStatusCode,
