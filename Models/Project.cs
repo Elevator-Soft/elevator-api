@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace Elevator.Api.Models
+namespace Models
 {
     public class Project
     {
@@ -8,5 +9,6 @@ namespace Elevator.Api.Models
         public string Name { get; set; }
         public Uri ProjectUri { get; set; }
         public string GitToken { get; set; }
+        public List<BuildConfig> BuildConfigs { get; set; }
     }
 }

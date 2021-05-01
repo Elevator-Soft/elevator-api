@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Elevator.Api.Models;
+using Models;
 
 namespace Elevator.Api.Services
 {

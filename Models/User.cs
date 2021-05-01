@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Elevator.Api.Models
+namespace Models
 {
     [JsonObject]
     public class User

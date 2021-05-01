@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Common;
-using Elevator.Api.Models;
+using Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Elevator.Api.Controllers
