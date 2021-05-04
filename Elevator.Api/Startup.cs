@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Repositories.Database;
 using Repositories.Repositories;
 using Elevator.Api.Middlewares;
+using Elevator.Api.Services.Interfaces;
 using Git;
 using Microsoft.Extensions.Logging;
 

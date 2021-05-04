@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Models
+namespace Elevator.Api.Dto
 {
-    public class BuildStep
+    public class BuildConfigDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

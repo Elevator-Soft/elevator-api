@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Elevator.Api.Services.Interfaces;
 using Models;
 using Elevator.Api.Utils.Mapper;
 using Repositories.Repositories;
@@ -23,13 +23,6 @@ namespace Elevator.Api.Services
             return dbProjects
                 .Select(ModelsMapper.ConvertProjectDbModelToServiceModel)
                 .ToList();
-        }
-
-        public async Task<Project> GetByIdAsync(Guid projectId)
-        {
-            var dbProject = await repository.FindByIdAsync(projectId.ToString())
-                .ConfigureAwait(false);
-            return ModelsMapper.ConvertProjectDbModelToServiceModel(dbProject);
         }
 
         public async Task<Project> CreateAsync(Project project)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Database.Models
@@ -9,6 +8,6 @@ namespace Repositories.Database.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<BuildStep> BuildSteps { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

@@ -3,10 +3,8 @@
 namespace Models
 {
     [JsonObject]
-    public class User
+    public class User : BaseModel
     {
         public string Email { get; set; }
-
-        public string Name { get; set; }
     }
 }
