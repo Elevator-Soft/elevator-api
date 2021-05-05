@@ -1,5 +1,5 @@
 ﻿using Elevator.Api.Dto;
-using Elevator.Api.Models;
+using Models;
 
 namespace Elevator.Api.Utils.Mapper
 {
@@ -26,6 +26,26 @@ namespace Elevator.Api.Utils.Mapper
         {
             Id = project.Id,
             Name = project.Name
+        };
+
+        public static BuildConfig ConvertBuildConfigDbModelToServiceModel(Repositories.Database.Models.BuildConfig dbBuildConfig) => new BuildConfig
+        {
+            Id = dbBuildConfig.Id,
+            Name = dbBuildConfig.Name,
+            ProjectId = dbBuildConfig.ProjectId
+        };
+
+        public static Repositories.Database.Models.BuildConfig ConvertBuildConfigServiceModelToDbModel(BuildConfig buildConfig) => new Repositories.Database.Models.BuildConfig
+        {
+            Id = buildConfig.Id,
+            Name = buildConfig.Name,
+            ProjectId = buildConfig.ProjectId
+        };
+
+        public static BuildConfigDto ConvertServiceBuildConfigModelToDto(BuildConfig buildConfig) => new BuildConfigDto
+        {
+            Id = buildConfig.Id,
+            Name = buildConfig.Name
         };
     }
 }

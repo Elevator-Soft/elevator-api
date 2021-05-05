@@ -1,18 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Common;
 using Elevator.Api.Dto;
 using Elevator.Api.Extensions.Dto;
-using Elevator.Api.Models;
 using Elevator.Api.Services;
-using Elevator.Api.Utils;
+using Elevator.Api.Services.Interfaces;
 using Elevator.Api.Utils.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 
 namespace Elevator.Api.Controllers

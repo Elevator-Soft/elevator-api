@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Elevator.Api.Models;
+using Elevator.Api.Services.Interfaces;
+using Models;
 using Elevator.Api.Utils.Mapper;
 using Repositories.Repositories;
 

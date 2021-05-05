@@ -1,5 +1,5 @@
 ﻿using Elevator.Api.Dto;
-using Elevator.Api.Models;
+using Models;
 
 namespace Elevator.Api.Extensions.Dto
 {

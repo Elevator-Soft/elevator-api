@@ -1,4 +1,4 @@
-﻿using Elevator.Api.Models;
+﻿using Models;
 using Microsoft.AspNetCore.Mvc;
 using Elevator.Api.Claims;
 

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Elevator.Api.Models;
+using Models;
 
-namespace Elevator.Api.Services
+namespace Elevator.Api.Services.Interfaces
 {
     public interface IProjectService
     {
         Task<List<Project>> GetAllAsync();
-
         Task<Project> CreateAsync(Project project);
     }
 }
