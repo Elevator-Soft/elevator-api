@@ -6,6 +6,7 @@ image:
 branches:
   only:
     - ci
+
 build_script:
   - cmd: echo Start build script
   - cmd: dotnet build Git\Git.csproj
