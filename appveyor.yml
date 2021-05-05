@@ -22,6 +22,9 @@ build_script:
   - cmd: dotnet pack Git\Git.csproj -o Packages
   - cmd: dotnet build ShellRunner\Shell.csproj
   - cmd: dotnet pack ShellRunner\Shell.csproj -o Packages
+  - cmd: dotnet build Models\Models.csproj
+  - cmd: dotnet pack Models\Models.csproj -o Packages
+
 
 artifacts:
 - path: 'Packages\*.nupkg'
