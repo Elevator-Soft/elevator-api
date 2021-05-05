@@ -26,24 +26,22 @@ namespace Elevator.Api.Controllers
             this.buildConfigService = buildConfigService;
         }
 
-        [HttpPost]
+        [HttpPost("projects/{projectId:guid}/buildConfigs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Route("projects/{projectId:guid}/buildConfigs")]
         public async Task<OperationResult<BuildConfigDto>> CreateAsync([FromBody] CreateBuildConfigRequestDto createBuildConfigRequestDto)
         {
             logger.LogInformation($"Start execution method '{nameof(CreateAsync)}'");
             logger.LogInformation($"CreateProjectRequestDto: '{createBuildConfigRequestDto}'");
 
             var buildConfig =
-                await buildConfigService.CreateInProjectAsync(createBuildConfigRequestDto.ToServiceModel());
+                await buildConfigService.CreateAsync(createBuildConfigRequestDto.ToServiceModel());
 
             var dtoModel = ModelsMapper.ConvertServiceBuildConfigModelToDto(buildConfig);
             return OperationResult<BuildConfigDto>.Created(dtoModel);
         }
 
-        [HttpGet]
+        [HttpGet("projects/{projectId:guid}/buildConfigs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Route("projects/{projectId:guid}/buildConfigs")]
         public async Task<OperationResult<List<BuildConfigDto>>> GetAllAsync([FromRoute]Guid projectId)
         {
             logger.LogInformation($"Start execution method '{nameof(GetAllAsync)}'");

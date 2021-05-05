@@ -26,7 +26,7 @@ namespace Elevator.Api.Services
                 .ToList();
         }
 
-        public async Task<BuildConfig> CreateInProjectAsync(BuildConfig buildConfig)
+        public async Task<BuildConfig> CreateAsync(BuildConfig buildConfig)
         {
             var dbBuildConfig =
                 await buildConfigRepository.AddAsync(ModelsMapper.ConvertBuildConfigServiceModelToDbModel(buildConfig));

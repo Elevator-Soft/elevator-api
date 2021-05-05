@@ -1,4 +1,3 @@
-using System;
 using Elevator.Api.Configuration;
 using Elevator.Api.Services;
 using Microsoft.AspNetCore.Builder;
@@ -13,8 +12,6 @@ using Repositories.Database;
 using Repositories.Repositories;
 using Elevator.Api.Middlewares;
 using Elevator.Api.Services.Interfaces;
-using Git;
-using Microsoft.Extensions.Logging;
 
 namespace Elevator.Api
 {
@@ -51,8 +48,10 @@ namespace Elevator.Api
                 .AddDbContext<DatabaseContext>();
 
             services.AddScoped<ProjectRepository>();
+            services.AddScoped<BuildConfigRepository>();
 
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IBuildConfigService, BuildConfigService>();
 
             services.AddLogging();
 

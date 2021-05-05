@@ -10,7 +10,7 @@ namespace Repositories.Repositories
 {
     public class BuildConfigRepository : AbstractRepository<BuildConfig>
     {
-        protected BuildConfigRepository(DatabaseContext dbContext, DbSet<BuildConfig> dbSet) : base(dbContext, dbContext.BuildConfigs)
+        public BuildConfigRepository(DatabaseContext dbContext) : base(dbContext, dbContext.BuildConfigs)
         {
         }
 
