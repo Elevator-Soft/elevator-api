@@ -9,12 +9,12 @@ branches:
 build_script:
   - cmd: echo Start build script
   - cmd: dotnet build Git\Git.csproj
-  - cmd: dotnet pack Git\Git.csproj -o Packages
+  - cmd: dotnet pack Git\Git.csproj -o Packages -p:PackageVersion=1.0.{build}
   - cmd: dotnet build ShellRunner\Shell.csproj
-  - cmd: dotnet pack ShellRunner\Shell.csproj -o Packages
+  - cmd: dotnet pack ShellRunner\Shell.csproj -o Packages -p:PackageVersion=1.0.{build}
 
 artifacts:
-- path: '**\*.nupkg'
+- path: 'Packages\*.nupkg'
 
 deploy:
   - provider: NuGet  
