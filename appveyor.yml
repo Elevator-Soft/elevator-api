@@ -3,6 +3,10 @@ version: 1.0.{build}
 image:
 - Visual Studio 2019
 
+branches:
+  only:
+    - main
+
 dotnet_csproj:
   patch: true
   file: '*\*.csproj'
