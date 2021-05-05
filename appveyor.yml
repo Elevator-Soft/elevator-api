@@ -8,13 +8,20 @@ branches:
     - ci
 
 dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
+  - patch: true
+    file: 'Git\Git.csproj'
+    version: '{version}'
+    package_version: '{version}'
+    assembly_version: '{version}'
+    file_version: '{version}'
+    informational_version: '{version}'
+  - patch: true
+    file: 'Shell\Shell.csproj'
+    version: '{version}'
+    package_version: '{version}'
+    assembly_version: '{version}'
+    file_version: '{version}'
+    informational_version: '{version}'
 
 build_script:
   - cmd: echo Start build script
