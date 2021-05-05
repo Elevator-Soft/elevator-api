@@ -7,12 +7,23 @@ branches:
   only:
     - ci
 
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+  package_version: $(APPVEYOR_BUILD_VERSION)
+
+
 build_script:
   - cmd: echo Start build script
   - cmd: dotnet build Git\Git.csproj
-  - cmd: dotnet pack Git\Git.csproj -o Packages -p:PackageVersion=$(APPVEYOR_BUILD_VERSION)
+  - cmd: dotnet pack Git\Git.csproj -o Packages
   - cmd: dotnet build ShellRunner\Shell.csproj
-  - cmd: dotnet pack ShellRunner\Shell.csproj -o Packages -p:PackageVersion=$(APPVEYOR_BUILD_VERSION)
+  - cmd: dotnet pack ShellRunner\Shell.csproj -o Packages
 
 artifacts:
 - path: 'Packages\*.nupkg'
