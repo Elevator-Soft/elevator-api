@@ -10,7 +10,7 @@ branches:
 dotnet_csproj:
   patch: true
   file: '*\*.csproj'
-  version: '{version}'
+  version: '$(APPVEYOR_REPO_TAG_NAME)'
   package_version: '{version}'
   assembly_version: '{version}'
   file_version: '{version}'
