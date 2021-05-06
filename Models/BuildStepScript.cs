@@ -1,4 +1,4 @@
-﻿namespace Repositories.Database.Models
+﻿namespace Models
 {
     public class BuildStepScript
     {
