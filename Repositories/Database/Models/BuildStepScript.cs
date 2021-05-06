@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Database.Models
 {
-    public class BuildStep
+    public class BuildStepScript
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public Guid BuildConfigId { get; set; }
-        public BuildStepScript BuildStepScript { get; set; }
+        public string Command { get; set; }
+        public string Arguments { get; set; }
     }
 }

@@ -53,7 +53,11 @@ namespace Elevator.Api.Utils.Mapper
             Id = dbBuildStep.Id,
             Name = dbBuildStep.Name,
             BuildConfigId = dbBuildStep.BuildConfigId,
-            BuildStepScript = dbBuildStep.BuildStepScript
+            BuildStepScript = new BuildStepScript
+            {
+                Arguments = dbBuildStep.BuildStepScript.Arguments,
+                Command = dbBuildStep.BuildStepScript.Command
+            }
         };
 
         public static Repositories.Database.Models.BuildStep ConvertBuildStepServiceModelToDbModel(BuildStep buildStep) => new Repositories.Database.Models.BuildStep
@@ -61,7 +65,11 @@ namespace Elevator.Api.Utils.Mapper
             Id = buildStep.Id,
             Name = buildStep.Name,
             BuildConfigId = buildStep.BuildConfigId,
-            BuildStepScript = buildStep.BuildStepScript
+            BuildStepScript = new Repositories.Database.Models.BuildStepScript
+            {
+                Arguments = buildStep.BuildStepScript.Arguments,
+                Command = buildStep.BuildStepScript.Command
+            }
         };
 
         public static BuildStepDto CovertBuildStepServiceModelToDto(BuildStep buildStep) => new BuildStepDto
