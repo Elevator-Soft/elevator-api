@@ -34,7 +34,7 @@ namespace Elevator.Api.Controllers
             logger.LogInformation($"Start execution method '{nameof(CreateAsync)}'");
             logger.LogInformation($"CreateProjectRequestDto: '{createProjectRequestDto}'");
 
-            if (!createProjectRequestDto.ProjectUri.ToString().StartsWith("https://"))
+            if (!createProjectRequestDto.GitUrl.ToString().StartsWith("https://"))
                 return OperationResult<CreateProjectResultDto>.BadRequest("Elevator only support git url witch starts with 'https://'");
 
             var project = await projectService.CreateAsync(createProjectRequestDto.ToServiceProject());

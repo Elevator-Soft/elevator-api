@@ -26,6 +26,8 @@ build_script:
   - cmd: dotnet pack Models\Models.csproj -o Packages
   - cmd: dotnet build Common\Common.csproj
   - cmd: dotnet pack Common\Common.csproj -o Packages
+  - cmd: dotnet build Repositories\Repositories.csproj
+  - cmd: dotnet pack Repositories\Repositories.csproj -o Packages
 
 
 artifacts:

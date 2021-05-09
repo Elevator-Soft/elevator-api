@@ -9,7 +9,7 @@ namespace Elevator.Api.Extensions.Dto
         {
             Name = createProjectRequestDto.Name,
             GitToken = createProjectRequestDto.GitToken,
-            ProjectUri = createProjectRequestDto.ProjectUri
+            ProjectUri = createProjectRequestDto.GitUrl
         };
     }
 }

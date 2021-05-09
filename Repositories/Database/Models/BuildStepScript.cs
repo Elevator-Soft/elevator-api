@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Database.Models
 {
-    public class BuildConfig
+    public class BuildStepScript
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public Guid ProjectId { get; set; }
-        public List<BuildStep> BuildSteps { get; set; }
+        public string Command { get; set; }
+        public string Arguments { get; set; }
     }
 }
