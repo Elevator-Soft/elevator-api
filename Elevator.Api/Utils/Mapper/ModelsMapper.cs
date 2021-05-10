@@ -78,5 +78,32 @@ namespace Elevator.Api.Utils.Mapper
             Name = buildStep.Name,
             BuildStepScript = buildStep.BuildStepScript
         };
+
+        public static Build ConvertBuildDbModelToServiceModel(Repositories.Database.Models.Build dbBuild) => new Build
+        {
+            Id = dbBuild.Id,
+            BuildConfigId = dbBuild.BuildConfigId,
+            BuildStatus = dbBuild.BuildStatus,
+            Logs = dbBuild.Logs,
+            FinishTime = dbBuild.FinishTime
+        };
+
+        public static Repositories.Database.Models.Build ConvertBuildServiceModelToDbModel(Build build) => new Repositories.Database.Models.Build
+        {
+            Id = build.Id,
+            BuildConfigId = build.BuildConfigId,
+            BuildStatus = build.BuildStatus,
+            Logs = build.Logs,
+            FinishTime = build.FinishTime
+        };
+
+        public static BuildDto ConvertBuildServiceModelToDto(Build build) => new BuildDto
+        {
+            Id = build.Id,
+            BuildConfigId = build.BuildConfigId,
+            BuildStatus = build.BuildStatus,
+            FinishTime = build.FinishTime,
+            Logs = build.Logs
+        };
     }
 }
