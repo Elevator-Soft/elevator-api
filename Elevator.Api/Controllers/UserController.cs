@@ -10,9 +10,9 @@ namespace Elevator.Api.Controllers
     public class UserController: ControllerBase
     {
         [HttpGet("me")]
-        public Task<OperationResult<User>> GetCurrentUserAsync()
+        public Task<HttpOperationResult<User>> GetCurrentUserAsync()
         {
-            return Task.FromResult(OperationResult<User>.Ok(GetUser()));
+            return Task.FromResult(HttpOperationResult<User>.Ok(GetUser()));
         }
     }
 }

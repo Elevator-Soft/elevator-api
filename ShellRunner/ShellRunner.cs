@@ -24,19 +24,26 @@ namespace Shell
                 RedirectStandardError = true
             };
 
-            var process = Process.Start(processStartInfo);
+            try
+            {
+                var process = Process.Start(processStartInfo);
 
-            if (process == null)
-                return OperationResult<ShellProcess>.InternalServerError($"Process not started. Args: {this.args}");
+                if (process == null)
+                    return OperationResult<ShellProcess>.Failed($"Process not started. Args: {args}");
 
-            await process.WaitForExitAsync(cancellationToken);
+                await process.WaitForExitAsync(cancellationToken);
 
-            if (process.ExitCode != 0)
-                return OperationResult<ShellProcess>.InternalServerError($"Exit code = {process.ExitCode}\n" + 
-                                                                         $"Output: {await process.StandardOutput.ReadToEndAsync()}\n" + 
-                                                                         $"Error: {await process.StandardError.ReadToEndAsync()}");
+                if (process.ExitCode != 0)
+                    return OperationResult<ShellProcess>.Failed($"Exit code = {process.ExitCode}\n" +
+                                                                $"Output: {await process.StandardOutput.ReadToEndAsync()}\n" +
+                                                                $"Error: {await process.StandardError.ReadToEndAsync()}");
 
-            return OperationResult<ShellProcess>.Ok(new ShellProcess(process.StandardOutput, process.StandardError));
+                return OperationResult<ShellProcess>.Success(new ShellProcess(process.StandardOutput, process.StandardError));
+            }
+            catch (Exception e)
+            {
+                return OperationResult<ShellProcess>.Failed($"Starting process gone wrong. Args: {args}. Exception: {e.Message}");
+            }
         }
 
         public async Task<OperationResult<ShellProcess>> RunWithRetryAsync(int retryCount, CancellationToken cancellationToken = default)

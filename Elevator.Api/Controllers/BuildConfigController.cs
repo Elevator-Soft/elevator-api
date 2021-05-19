@@ -37,7 +37,7 @@ namespace Elevator.Api.Controllers
                 await buildConfigService.CreateAsync(createBuildConfigRequestDto.ToServiceModel());
 
             var dtoModel = ModelsMapper.ConvertServiceBuildConfigModelToDto(buildConfig);
-            return OperationResult<BuildConfigDto>.Created(dtoModel);
+            return HttpOperationResult<BuildConfigDto>.Created(dtoModel);
         }
 
         [HttpGet("projects/{projectId:guid}/buildConfigs")]
@@ -49,7 +49,7 @@ namespace Elevator.Api.Controllers
             var buildConfigs = await buildConfigService.GetAllFromProjectAsync(projectId);
             var dtoModels = buildConfigs.Select(ModelsMapper.ConvertServiceBuildConfigModelToDto).ToList();
 
-            return OperationResult<List<BuildConfigDto>>.Ok(dtoModels);
+            return HttpOperationResult<List<BuildConfigDto>>.Ok(dtoModels);
         }
     }
 }
