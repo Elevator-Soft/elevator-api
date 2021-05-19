@@ -26,33 +26,33 @@ namespace Elevator.Api.Controllers
 
         [HttpGet("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/builds/{buildId:guid}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<BuildDto>> GetByIdAsync([FromRoute]Guid buildConfigId, [FromRoute]Guid buildId)
+        public async Task<HttpOperationResult<BuildDto>> GetByIdAsync([FromRoute]Guid buildConfigId, [FromRoute]Guid buildId)
         {
             logger.LogInformation($"Start execution method '{nameof(GetByIdAsync)}'");
 
             var build = await buildService.GetByIdAsync(buildConfigId, buildId);
-            return OperationResult<BuildDto>.Ok(ModelsMapper.ConvertBuildServiceModelToDto(build));
+            return HttpOperationResult<BuildDto>.Ok(ModelsMapper.ConvertBuildServiceModelToDto(build));
         }
 
         [HttpGet("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/builds/last")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<BuildDto>> GetLastAsync([FromRoute] Guid buildConfigId)
+        public async Task<HttpOperationResult<BuildDto>> GetLastAsync([FromRoute] Guid buildConfigId)
         {
             logger.LogInformation($"Start execution method '{nameof(GetLastAsync)}'");
 
             var build = await buildService.GetLastBuildAsync(buildConfigId);
-            return OperationResult<BuildDto>.Ok(ModelsMapper.ConvertBuildServiceModelToDto(build));
+            return HttpOperationResult<BuildDto>.Ok(ModelsMapper.ConvertBuildServiceModelToDto(build));
         }
 
         [HttpGet("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/builds")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<List<BuildDto>>> GetAfterDateTimeAsyncTask([FromRoute] Guid buildConfigId, [FromQuery] DateTime afterDateTime)
+        public async Task<HttpOperationResult<List<BuildDto>>> GetAfterDateTimeAsyncTask([FromRoute] Guid buildConfigId, [FromQuery] DateTime afterDateTime)
         {
             logger.LogInformation($"Start execution method '{nameof(GetAfterDateTimeAsyncTask)}'");
 
             var builds = await buildService.GetAllBuildsAfterDateAsync(buildConfigId, afterDateTime);
             var dtoModels = builds.Select(ModelsMapper.ConvertBuildServiceModelToDto).ToList();
-            return OperationResult<List<BuildDto>>.Ok(dtoModels);
+            return HttpOperationResult<List<BuildDto>>.Ok(dtoModels);
         }
     }
 }
