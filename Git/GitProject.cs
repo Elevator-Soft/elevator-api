@@ -42,7 +42,7 @@ namespace Git
             var cloneProcessResult = await shellRunner.RunAsync(cancellationToken);
             
             if (!cloneProcessResult.IsSuccessful)
-                return OperationResult<GitRepository>.InternalServerError(cloneProcessResult.Error);
+                return OperationResult<GitRepository>.Failed(cloneProcessResult.Error);
 
             logger.LogInformation(await cloneProcessResult.Value.Error.ReadToEndAsync());
             logger.LogInformation(await cloneProcessResult.Value.Output.ReadToEndAsync());
@@ -50,7 +50,7 @@ namespace Git
             var repositoryDirectory = Path.Combine(gitProjectInformation.WorkingDirectory,
                 gitProjectInformation.TargetDirectory);
             
-            return OperationResult<GitRepository>.Ok(new GitRepository(repositoryDirectory, loggerFactory.CreateLogger<GitRepository>()));
+            return OperationResult<GitRepository>.Success(new GitRepository(repositoryDirectory, loggerFactory.CreateLogger<GitRepository>()));
         }
 
         private string GetUrlWithAccessToken()

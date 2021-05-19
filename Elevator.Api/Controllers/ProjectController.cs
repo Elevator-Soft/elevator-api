@@ -29,13 +29,13 @@ namespace Elevator.Api.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<CreateProjectResultDto>> CreateAsync([FromBody] CreateProjectRequestDto createProjectRequestDto)
+        public async Task<HttpOperationResult<CreateProjectResultDto>> CreateAsync([FromBody] CreateProjectRequestDto createProjectRequestDto)
         {
             logger.LogInformation($"Start execution method '{nameof(CreateAsync)}'");
             logger.LogInformation($"CreateProjectRequestDto: '{createProjectRequestDto}'");
 
             if (!createProjectRequestDto.GitUrl.ToString().StartsWith("https://"))
-                return OperationResult<CreateProjectResultDto>.BadRequest("Elevator only support git url witch starts with 'https://'");
+                return HttpOperationResult<CreateProjectResultDto>.BadRequest("Elevator only support git url witch starts with 'https://'");
 
             var project = await projectService.CreateAsync(createProjectRequestDto.ToServiceProject());
             var resultDto = new CreateProjectResultDto
@@ -43,17 +43,17 @@ namespace Elevator.Api.Controllers
                 Id = project.Id
             };
 
-            return OperationResult<CreateProjectResultDto>.Created(resultDto);
+            return HttpOperationResult<CreateProjectResultDto>.Created(resultDto);
         }
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<List<ProjectDto>>> GetAllAsync()
+        public async Task<HttpOperationResult<List<ProjectDto>>> GetAllAsync()
         {
             logger.LogInformation($"Start execution method '{nameof(GetAllAsync)}'");
             var projects = await projectService.GetAllAsync();
             var dtoModels = projects.Select(ModelsMapper.ConvertProjectServiceModelToDtoModel).ToList();
-            return OperationResult<List<ProjectDto>>.Ok(dtoModels);
+            return HttpOperationResult<List<ProjectDto>>.Ok(dtoModels);
         }
     }
 }

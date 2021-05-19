@@ -28,7 +28,7 @@ namespace Elevator.Api.Controllers
 
         [HttpPost("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/buildSteps")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<BuildStepDto>> CreateAsync([FromBody] CreateBuildStepRequestDto createBuildStepRequestDto)
+        public async Task<HttpOperationResult<BuildStepDto>> CreateAsync([FromBody] CreateBuildStepRequestDto createBuildStepRequestDto)
         {
             logger.LogInformation($"Start execution method '{nameof(CreateAsync)}'");
             logger.LogInformation($"CreateProjectRequestDto: '{createBuildStepRequestDto}'");
@@ -37,19 +37,19 @@ namespace Elevator.Api.Controllers
                 await buildStepService.CreateAsync(createBuildStepRequestDto.ToServiceModel());
 
             var dtoModel = ModelsMapper.CovertBuildStepServiceModelToDto(buildStep);
-            return OperationResult<BuildStepDto>.Created(dtoModel);
+            return HttpOperationResult<BuildStepDto>.Created(dtoModel);
         }
 
         [HttpGet("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/buildSteps")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<List<BuildStepDto>>> GetAllAsync([FromRoute] Guid buildConfigId)
+        public async Task<HttpOperationResult<List<BuildStepDto>>> GetAllAsync([FromRoute] Guid buildConfigId)
         {
             logger.LogInformation($"Start execution method '{nameof(GetAllAsync)}'");
 
             var buildSteps = await buildStepService.GetAllFromBuildConfigAsync(buildConfigId);
             var dtoModels = buildSteps.Select(ModelsMapper.CovertBuildStepServiceModelToDto).ToList();
 
-            return OperationResult<List<BuildStepDto>>.Ok(dtoModels);
+            return HttpOperationResult<List<BuildStepDto>>.Ok(dtoModels);
         }
     }
 }

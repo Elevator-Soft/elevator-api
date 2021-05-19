@@ -45,11 +45,11 @@ namespace Git
             var getCommitHashProcessResult = await shellRunner.RunAsync();
 
             if (!getCommitHashProcessResult.IsSuccessful)
-                return OperationResult<string>.InternalServerError(getCommitHashProcessResult.Error);
+                return OperationResult<string>.Failed(getCommitHashProcessResult.Error);
 
             logger.LogInformation(await getCommitHashProcessResult.Value.Error.ReadToEndAsync());
 
-            return OperationResult<string>.Ok(await getCommitHashProcessResult.Value.Output.ReadToEndAsync());
+            return OperationResult<string>.Success(await getCommitHashProcessResult.Value.Output.ReadToEndAsync());
         }
     }
 }
