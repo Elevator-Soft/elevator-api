@@ -8,15 +8,11 @@ namespace Shell
 {
     public class ShellRunner
     {
-        private readonly ShellRunnerArgs args;
-
-        public ShellRunner(ShellRunnerArgs args)
+        public async Task<OperationResult<ShellProcess>> RunAsync(ShellRunnerArgs args, CancellationToken cancellationToken = default)
         {
-            this.args = args ?? throw new ArgumentNullException(nameof(args));
-        }
+            if (args == null)
+                throw new ArgumentNullException(nameof(args));
 
-        public async Task<OperationResult<ShellProcess>> RunAsync(CancellationToken cancellationToken = default)
-        {
             var processStartInfo = new ProcessStartInfo(args.Command, string.Join(' ', args.Arguments))
             {
                 WorkingDirectory = args.WorkingDirectory,
@@ -46,15 +42,15 @@ namespace Shell
             }
         }
 
-        public async Task<OperationResult<ShellProcess>> RunWithRetryAsync(int retryCount, CancellationToken cancellationToken = default)
+        public async Task<OperationResult<ShellProcess>> RunWithRetryAsync(ShellRunnerArgs args, int retryCount, CancellationToken cancellationToken = default)
         {
-            var processResult = await RunAsync(cancellationToken);
+            var processResult = await RunAsync(args, cancellationToken);
             if (processResult.IsSuccessful)
                 return processResult;
 
             for (var i = 1; i < retryCount; i++)
             {
-                processResult = await RunAsync(cancellationToken);
+                processResult = await RunAsync(args, cancellationToken);
                 if (processResult.IsSuccessful)
                     return processResult;
             }

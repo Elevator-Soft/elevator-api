@@ -14,11 +14,13 @@ namespace Git
         private readonly GitProjectInformation gitProjectInformation;
         private readonly ILogger<GitProject> logger;
         private readonly ILoggerFactory loggerFactory;
+        private readonly ShellRunner shellRunner;
 
-        public GitProject(GitProjectInformation gitProjectInformation, ILoggerFactory loggerFactory)
+        public GitProject(GitProjectInformation gitProjectInformation, ILoggerFactory loggerFactory, ShellRunner shellRunner)
         {
             this.gitProjectInformation = gitProjectInformation ?? throw new ArgumentNullException(nameof(gitProjectInformation));
             this.loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            this.shellRunner = shellRunner ?? throw new ArgumentNullException(nameof(shellRunner));
             this.logger = loggerFactory.CreateLogger<GitProject>();
         }
 
@@ -37,9 +39,8 @@ namespace Git
             if (gitProjectInformation.CloneRecursive)
                 arguments.Add("--recursive");
 
-            var shellRunner = new ShellRunner(new ShellRunnerArgs(gitProjectInformation.WorkingDirectory, "git", arguments.ToArray()));
-
-            var cloneProcessResult = await shellRunner.RunAsync(cancellationToken);
+            var processRunArgs = new ShellRunnerArgs(gitProjectInformation.WorkingDirectory, "git", arguments.ToArray());
+            var cloneProcessResult = await shellRunner.RunAsync(processRunArgs, cancellationToken);
             
             if (!cloneProcessResult.IsSuccessful)
                 return OperationResult<GitRepository>.Failed(cloneProcessResult.Error);
@@ -50,7 +51,7 @@ namespace Git
             var repositoryDirectory = Path.Combine(gitProjectInformation.WorkingDirectory,
                 gitProjectInformation.TargetDirectory);
             
-            return OperationResult<GitRepository>.Success(new GitRepository(repositoryDirectory, loggerFactory.CreateLogger<GitRepository>()));
+            return OperationResult<GitRepository>.Success(new GitRepository(shellRunner, repositoryDirectory, loggerFactory.CreateLogger<GitRepository>()));
         }
 
         private string GetUrlWithAccessToken()
