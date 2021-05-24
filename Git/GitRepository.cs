@@ -24,7 +24,7 @@ namespace Git
         {
             using var scope = logger.BeginScope("Checkout");
 
-            var shellRunnerArgs = new ShellRunnerArgs(Directory, "git", "checkout", branch);
+            var shellRunnerArgs = new ShellRunnerArgs(Directory, "git", false, "checkout", branch);
 
             var checkoutProcessResult = await shellRunner.RunAsync(shellRunnerArgs);
 
@@ -40,7 +40,7 @@ namespace Git
         {
             using var scope = logger.BeginScope("Get commit hash");
 
-            var shellRunnerArgs = new ShellRunnerArgs(Directory, "git", "rev-parse", "HEAD");
+            var shellRunnerArgs = new ShellRunnerArgs(Directory, "git", false, "rev-parse", "HEAD");
 
             var getCommitHashProcessResult = await shellRunner.RunAsync(shellRunnerArgs);
 

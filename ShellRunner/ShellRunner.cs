@@ -17,7 +17,8 @@ namespace Shell
             {
                 WorkingDirectory = args.WorkingDirectory,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
+                UseShellExecute = args.UseShellExecute 
             };
 
             try

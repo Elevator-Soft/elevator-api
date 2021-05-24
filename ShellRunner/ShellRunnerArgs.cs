@@ -10,18 +10,14 @@ namespace Shell
 
         public string[] Arguments { get; }
 
-        public ShellRunnerArgs(string workingDirectory, string command)
-        {
-            WorkingDirectory = workingDirectory ?? throw new ArgumentNullException(nameof(workingDirectory));
-            Command = command ?? throw new ArgumentNullException(nameof(command));
-            Arguments = new string[0];
-        }
+        public bool UseShellExecute { get; }
 
-        public ShellRunnerArgs(string workingDirectory, string command, params string[] arguments)
+        public ShellRunnerArgs(string workingDirectory, string command, bool useShellExecute, params string[] arguments)
         {
             WorkingDirectory = workingDirectory ?? throw new ArgumentNullException(nameof(workingDirectory));
             Command = command ?? throw new ArgumentNullException(nameof(command));
-            Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
+            UseShellExecute = useShellExecute;
+            Arguments = arguments ?? Array.Empty<string>();
         }
 
         public override string ToString()

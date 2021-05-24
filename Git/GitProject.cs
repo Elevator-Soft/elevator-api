@@ -39,7 +39,7 @@ namespace Git
             if (gitProjectInformation.CloneRecursive)
                 arguments.Add("--recursive");
 
-            var processRunArgs = new ShellRunnerArgs(gitProjectInformation.WorkingDirectory, "git", arguments.ToArray());
+            var processRunArgs = new ShellRunnerArgs(gitProjectInformation.WorkingDirectory, "git", false, arguments.ToArray());
             var cloneProcessResult = await shellRunner.RunAsync(processRunArgs, cancellationToken);
             
             if (!cloneProcessResult.IsSuccessful)
