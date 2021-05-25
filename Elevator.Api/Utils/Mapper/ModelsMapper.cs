@@ -105,5 +105,40 @@ namespace Elevator.Api.Utils.Mapper
             FinishTime = build.FinishTime,
             Logs = build.Logs
         };
+
+        public static User ConvertUserDatabaseModelToService(Repositories.Database.Models.User user) => new()
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            ProjectAccesses = new()
+            {
+                Admin = user.ProjectsWithAdminAccess,
+                User = user.ProjectsWithUserAccess
+            }
+        };
+
+        public static Repositories.Database.Models.User ConvertUserServiceModelToDatabase(User user) => new()
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            ProjectsWithAdminAccess = user.ProjectAccesses.Admin,
+            ProjectsWithUserAccess = user.ProjectAccesses.User,
+            IsRegistered = true
+        };
+
+        public static UserDto ConvertUserServiceModelToDto(User user) => new()
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            IsRegistered = true,
+            ProjectAccesses = new()
+            {
+                Admin = user.ProjectAccesses.Admin,
+                User = user.ProjectAccesses.User
+            }
+        };
     }
 }

@@ -1,13 +1,14 @@
-﻿namespace Models
+﻿using Newtonsoft.Json;
+
+namespace Elevator.Api.Authentication
 {
-    public class User
+    [JsonObject]
+    public class AuthenticatedUser
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
         public string Email { get; set; }
-
-        public ProjectAccesses ProjectAccesses { get; set; }
     }
 }

@@ -51,11 +51,13 @@ namespace Elevator.Api
             services.AddScoped<BuildConfigRepository>();
             services.AddScoped<BuildStepRepository>();
             services.AddScoped<BuildRepository>();
+            services.AddScoped <UserRepository>();
 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IBuildConfigService, BuildConfigService>();
             services.AddScoped<IBuildStepService, BuildStepService>();
             services.AddScoped<IBuildService, BuildService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddLogging();
 

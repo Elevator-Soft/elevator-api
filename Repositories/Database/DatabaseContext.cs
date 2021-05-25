@@ -21,6 +21,7 @@ namespace Repositories.Database
         public DbSet<BuildConfig> BuildConfigs { get; set; }
         public DbSet<BuildStep> BuildSteps { get; set; }
         public DbSet<Build> Builds { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,18 +1,14 @@
-﻿using Models;
+﻿using System;
+using Elevator.Api.Authentication;
+using Models;
 using Microsoft.AspNetCore.Mvc;
 using Elevator.Api.Claims;
+using Elevator.Api.Extensions;
 
 namespace Elevator.Api.Controllers
 {
     public abstract class ControllerBase: Controller
     {
-        protected User GetUser()
-        {
-            return new User
-            {
-                Email = User.GetValueByType(ClaimTypes.Email),
-                Name = User.GetValueByType(ClaimTypes.Name)
-            };
-        }
+        protected AuthenticatedUser CurrentUser => User.GetServerUser();
     }
 }
