@@ -40,6 +40,18 @@ namespace Elevator.Api.Controllers
             return HttpOperationResult<BuildStepDto>.Created(dtoModel);
         }
 
+        [HttpPut("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/buildSteps/{id:guid}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<HttpVoidOperationResult> UpdateAsync([FromBody] UpdateBuildStepRequestDto updateBuildStepRequestDto, [FromRoute] Guid id)
+        {
+            logger.LogInformation($"Start execution method '{nameof(UpdateAsync)}'");
+            logger.LogInformation($"UpdateBuildStepRequestDto: '{updateBuildStepRequestDto}'");
+
+            await buildStepService.UpdateAsync(id, updateBuildStepRequestDto.ToServiceModel());
+
+            return HttpVoidOperationResult.Ok();
+        }
+
         [HttpGet("projects/{projectId:guid}/buildConfigs/{buildConfigId:guid}/buildSteps")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<HttpOperationResult<List<BuildStepDto>>> GetAllAsync([FromRoute] Guid buildConfigId)
@@ -51,5 +63,7 @@ namespace Elevator.Api.Controllers
 
             return HttpOperationResult<List<BuildStepDto>>.Ok(dtoModels);
         }
+
+
     }
 }

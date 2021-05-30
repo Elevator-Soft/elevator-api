@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Elevator.Api.Exceptions;
 using Elevator.Api.Services.Interfaces;
 using Elevator.Api.Utils.Mapper;
 using Models;
@@ -30,6 +31,17 @@ namespace Elevator.Api.Services
         {
             var dbBuildStep = await buildStepRepository.AddAsync(ModelsMapper.ConvertBuildStepServiceModelToDbModel(buildStep));
             return ModelsMapper.ConvertBuildStepDbModelToServiceModel(dbBuildStep);
+        }
+
+        public async Task UpdateAsync(Guid id, BuildStep buildStep)
+        {
+            var dbBuildStep = await buildStepRepository.FindByIdAsync(id);
+            if (dbBuildStep == null)
+                throw new EntityNotFoundException(nameof(BuildStep), id.ToString());
+            dbBuildStep.Name = buildStep.Name;
+            dbBuildStep.BuildStepScript.Command = buildStep.BuildStepScript.Command;
+            dbBuildStep.BuildStepScript.Arguments = buildStep.BuildStepScript.Arguments;
+            await buildStepRepository.UpdateAsync(dbBuildStep);
         }
     }
 }

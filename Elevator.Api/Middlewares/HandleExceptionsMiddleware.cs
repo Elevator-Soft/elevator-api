@@ -19,23 +19,31 @@ namespace Elevator.Api.Middlewares
             }
             catch (ApiException apiException)
             {
+                HttpVoidOperationResult error;
                 switch (apiException.StatusCode)
                 {
                     case HttpStatusCode.InternalServerError:
-                        var error = VoidOperationResult.InternalServerError(apiException.Message);
+                        error = HttpVoidOperationResult.InternalServerError(apiException.Message);
                         await WriteErrorAsync(context, error);
                         break;
-                    //todo(likvidator): сделать без свитча 
+                    case HttpStatusCode.Forbidden:
+                        error = HttpVoidOperationResult.Forbidden(apiException.Message);
+                        await WriteErrorAsync(context, error);
+                        break;
+                    case HttpStatusCode.NotFound:
+                        error = HttpVoidOperationResult.NotFound(apiException.Message);
+                        await WriteErrorAsync(context, error);
+                        break;
                 }
             }
             catch (Exception e)
             {
-                var error = VoidOperationResult.InternalServerError(e.Message);
+                var error = HttpVoidOperationResult.InternalServerError(e.Message);
                 await WriteErrorAsync(context, error);
             }
         }
 
-        private static Task WriteErrorAsync(HttpContext httpContext, VoidOperationResult result)
+        private static Task WriteErrorAsync(HttpContext httpContext, HttpVoidOperationResult result)
         {
             httpContext.Response.Headers[HeaderNames.CacheControl] = "no-cache, no-store, must-revalidate";
             httpContext.Response.Headers[HeaderNames.Pragma] = "no-cache";

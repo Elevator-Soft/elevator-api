@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Elevator.Api.Dto;
+using Elevator.Api.Exceptions;
 using Elevator.Api.Extensions.Dto;
 using Elevator.Api.Services;
+using Elevator.Api.Services.Interfaces;
 using Elevator.Api.Utils.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Models;
 
 namespace Elevator.Api.Controllers
 {
@@ -18,9 +21,9 @@ namespace Elevator.Api.Controllers
     public class BuildConfigController : ControllerBase
     {
         private readonly ILogger<BuildConfigController> logger;
-        private readonly BuildConfigService buildConfigService;
+        private readonly IBuildConfigService buildConfigService;
 
-        public BuildConfigController(ILogger<BuildConfigController> logger, BuildConfigService buildConfigService)
+        public BuildConfigController(ILogger<BuildConfigController> logger, IBuildConfigService buildConfigService)
         {
             this.logger = logger;
             this.buildConfigService = buildConfigService;
@@ -28,7 +31,7 @@ namespace Elevator.Api.Controllers
 
         [HttpPost("projects/{projectId:guid}/buildConfigs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<BuildConfigDto>> CreateAsync([FromBody] CreateBuildConfigRequestDto createBuildConfigRequestDto)
+        public async Task<HttpOperationResult<BuildConfigDto>> CreateAsync([FromBody] CreateBuildConfigRequestDto createBuildConfigRequestDto)
         {
             logger.LogInformation($"Start execution method '{nameof(CreateAsync)}'");
             logger.LogInformation($"CreateProjectRequestDto: '{createBuildConfigRequestDto}'");
@@ -42,7 +45,7 @@ namespace Elevator.Api.Controllers
 
         [HttpGet("projects/{projectId:guid}/buildConfigs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<OperationResult<List<BuildConfigDto>>> GetAllAsync([FromRoute]Guid projectId)
+        public async Task<HttpOperationResult<List<BuildConfigDto>>> GetAllAsync([FromRoute]Guid projectId)
         {
             logger.LogInformation($"Start execution method '{nameof(GetAllAsync)}'");
 
@@ -50,6 +53,23 @@ namespace Elevator.Api.Controllers
             var dtoModels = buildConfigs.Select(ModelsMapper.ConvertServiceBuildConfigModelToDto).ToList();
 
             return HttpOperationResult<List<BuildConfigDto>>.Ok(dtoModels);
+        }
+
+        [HttpGet("projects/{projectId:guid}/buildConfigs/{id:guid}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<HttpOperationResult<BuildConfigDto>> GetAsync([FromRoute] Guid projectId, [FromRoute] Guid id)
+        {
+            //todo(likvidator): это костыль, да (:
+
+            logger.LogInformation($"Start execution method '{nameof(GetAsync)}'. Id={id}");
+            var buildConfigs = (await buildConfigService.GetAllFromProjectAsync(projectId))
+                .Select(ModelsMapper.ConvertServiceBuildConfigModelToDto).ToList();
+            var result = buildConfigs.FirstOrDefault(bc => bc.Id == id);
+
+            if (result == null)
+                throw new EntityNotFoundException(nameof(BuildConfig), id.ToString());
+
+            return HttpOperationResult<BuildConfigDto>.Ok(result);
         }
     }
 }

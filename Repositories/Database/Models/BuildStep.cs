@@ -9,6 +9,7 @@ namespace Repositories.Database.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Guid BuildConfigId { get; set; }
+        public Guid BuildStepScriptId { get; set; }
         public BuildStepScript BuildStepScript { get; set; }
     }
 }

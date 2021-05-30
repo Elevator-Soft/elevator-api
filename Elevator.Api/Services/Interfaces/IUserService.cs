@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Models;
 
 namespace Elevator.Api.Services.Interfaces
@@ -10,5 +11,7 @@ namespace Elevator.Api.Services.Interfaces
         Task RegisterUser(User user);
 
         Task<bool> ExistsAsync(string id);
+
+        Task<IReadOnlyList<string>> GetAllUserIdsAsync();
     }
 }

@@ -41,5 +41,10 @@ namespace Elevator.Api.Services
             var dbUser = await userRepository.FindByIdAsync(id);
             return dbUser != null;
         }
+
+        public async Task<IReadOnlyList<string>> GetAllUserIdsAsync()
+        {
+            return (await userRepository.GetAllAsync()).Select(dbUser => dbUser.Id).ToList();
+        }
     }
 }

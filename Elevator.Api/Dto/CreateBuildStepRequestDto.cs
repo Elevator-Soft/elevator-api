@@ -1,8 +1,10 @@
 ﻿using System;
 using Models;
+using Newtonsoft.Json;
 
 namespace Elevator.Api.Dto
 {
+    [JsonObject]
     public class CreateBuildStepRequestDto
     {
         public string Name { get; set; }
