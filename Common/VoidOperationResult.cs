@@ -4,36 +4,50 @@ namespace Common
 {
     public class VoidOperationResult
     {
-        public bool IsSuccessful { get; private init; } = true;
-        public HttpStatusCode HttpStatusCode { get; private init; }
-        public string Error { get; private init; }
+        public bool IsSuccessful { get; protected init; } = true;
+        public string Error { get; protected init; }
 
-        public static VoidOperationResult CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) => new VoidOperationResult
+        public static VoidOperationResult Success() => new()
+        { };
+
+        public static VoidOperationResult Failed(string error = "") => new()
         {
-            IsSuccessful = false,
-            HttpStatusCode = httpStatusCode,
-            Error = errorMessage
+            Error = error,
+            IsSuccessful = false
         };
+    }
 
-        public static VoidOperationResult CreateGoodOperationResult(HttpStatusCode httpStatusCode) =>
-            new VoidOperationResult
+    public class HttpVoidOperationResult: VoidOperationResult
+    {
+        public HttpStatusCode HttpStatusCode { get; private init; }
+
+        public static HttpVoidOperationResult CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) =>
+            new()
+            {
+                IsSuccessful = false,
+                HttpStatusCode = httpStatusCode,
+                Error = errorMessage
+            };
+
+        public static HttpVoidOperationResult CreateGoodOperationResult(HttpStatusCode httpStatusCode) =>
+            new()
             {
                 IsSuccessful = true,
                 HttpStatusCode = httpStatusCode
             };
 
-        public static VoidOperationResult Ok() => CreateGoodOperationResult(HttpStatusCode.OK);
+        public static HttpVoidOperationResult Ok() => CreateGoodOperationResult(HttpStatusCode.OK);
 
-        public static VoidOperationResult BadRequest(string errorMessage = "") =>
+        public static HttpVoidOperationResult BadRequest(string errorMessage = "") =>
             CreateBadOperationResult(HttpStatusCode.BadRequest, $"Bad request. Error message: {errorMessage}");
 
-        public static VoidOperationResult Forbidden(string errorMessage = "") =>
+        public static HttpVoidOperationResult Forbidden(string errorMessage = "") =>
             CreateBadOperationResult(HttpStatusCode.Forbidden, $"Forbidden. Error message: {errorMessage}");
 
-        public static VoidOperationResult NotFound(string errorMessage = "") =>
+        public static HttpVoidOperationResult NotFound(string errorMessage = "") =>
             CreateBadOperationResult(HttpStatusCode.NotFound, $"Not found. Error message: {errorMessage}");
 
-        public static VoidOperationResult InternalServerError(string errorMessage = "") =>
+        public static HttpVoidOperationResult InternalServerError(string errorMessage = "") =>
             CreateBadOperationResult(HttpStatusCode.InternalServerError,
                 $"Internal server error, smth went wrong. Error message: {errorMessage}");
     }

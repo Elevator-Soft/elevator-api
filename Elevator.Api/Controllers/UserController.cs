@@ -31,6 +31,9 @@ namespace Elevator.Api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<HttpOperationResult<UserDto>> GetCurrentUserAsync()
         {
+            logger.LogInformation($"Start execution method {nameof(GetCurrentUserAsync)}");
+            logger.LogInformation($"Current user: {CurrentUser.Id}");
+
             if (!await userService.ExistsAsync(CurrentUser.Id))
             {
                 return HttpOperationResult<UserDto>.Ok(new()
@@ -55,6 +58,9 @@ namespace Elevator.Api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<HttpOperationResult<UserDto>> RegisterCurrentUserAsync()
         {
+            logger.LogInformation($"Start execution method {nameof(GetCurrentUserAsync)}");
+            logger.LogInformation($"Current user: {CurrentUser.Id}");
+
             var currentUser = new User()
             {
                 Id = CurrentUser.Id,
@@ -70,6 +76,16 @@ namespace Elevator.Api.Controllers
             await userService.RegisterUser(currentUser);
 
             return HttpOperationResult<UserDto>.Ok(ModelsMapper.ConvertUserServiceModelToDto(currentUser));
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<HttpOperationResult<IReadOnlyList<string>>> GetAllUserIdsAsync()
+        {
+            logger.LogInformation($"Start execution method {nameof(GetAllUserIdsAsync)}");
+            logger.LogInformation($"Current user: {CurrentUser.Id}");
+
+            return HttpOperationResult<IReadOnlyList<string>>.Ok(await userService.GetAllUserIdsAsync());
         }
     }
 }

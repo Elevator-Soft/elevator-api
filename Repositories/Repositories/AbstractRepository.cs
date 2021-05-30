@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Database;
@@ -29,6 +30,11 @@ namespace Repositories.Repositories
             return await DbContext.FindAsync<T>(id);
         }
 
+        public virtual async Task<T> FindByIdAsync(Guid id)
+        {
+            return await DbContext.FindAsync<T>(id);
+        }
+
         public virtual async Task RemoveAsync(T entity)
         {
             DbContext.Remove(entity);
@@ -37,6 +43,7 @@ namespace Repositories.Repositories
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
+            DbContext.Entry(entity).State = EntityState.Modified;
             DbContext.Update(entity);
             await DbContext.SaveChangesAsync();
             return entity;

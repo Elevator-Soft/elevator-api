@@ -29,11 +29,11 @@ namespace Git
             var checkoutProcessResult = await shellRunner.RunAsync(shellRunnerArgs);
 
             if (!checkoutProcessResult.IsSuccessful)
-                return VoidOperationResult.InternalServerError(checkoutProcessResult.Error);
+                return VoidOperationResult.Failed(checkoutProcessResult.Error);
 
             logger.LogInformation(await checkoutProcessResult.Value.Error.ReadToEndAsync());
 
-            return VoidOperationResult.Ok();
+            return VoidOperationResult.Success();
         }
 
         public async Task<OperationResult<string>> GetCommitHashAsync()
