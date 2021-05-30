@@ -15,7 +15,7 @@ namespace Repositories.Repositories
 
         public async Task<List<Build>> GetAllFromBuildConfigAsync(Guid buildConfigId)
         {
-            var sql = "select * from \"Builds\" \n" + $"where buildConfigId={buildConfigId}";
+            var sql = "select * from \"Builds\" \n" + $"where \"buildConfigId\"='{buildConfigId}'";
             return await DbSet.FromSqlRaw(sql).ToListAsync();
         }
     }

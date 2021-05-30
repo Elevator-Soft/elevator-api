@@ -103,7 +103,8 @@ namespace Elevator.Api.Utils.Mapper
             BuildConfigId = build.BuildConfigId,
             BuildStatus = build.BuildStatus,
             FinishTime = build.FinishTime,
-            Logs = build.Logs
+            Logs = build.Logs,
+            StartedByUserId = build.StartedByUserId
         };
 
         public static User ConvertUserDatabaseModelToService(Repositories.Database.Models.User user) => new()
