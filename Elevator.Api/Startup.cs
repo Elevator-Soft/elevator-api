@@ -1,3 +1,4 @@
+using Elevator.Agent.Manager.Client.Providers;
 using Elevator.Api.Configuration;
 using Elevator.Api.Services;
 using Microsoft.AspNetCore.Builder;
@@ -75,6 +76,8 @@ namespace Elevator.Api
                     });
 
             services.AddSingleton<HandleExceptionsMiddleware>();
+
+            services.AddSingleton(_ => new BuildTaskProvider("https://localhost:10500"));
         }
 
         [UsedImplicitly]

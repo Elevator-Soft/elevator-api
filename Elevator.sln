@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{D6A42AA8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{F7B605E7-1543-4AC9-9521-87320EE44AFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{CD673EDC-7B6B-45F5-AAD5-85DF5C40280B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{CD673EDC-7B6B-45F5-AAD5-85DF5C40280B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elevator.Agent.Manager.Client", "Elevator.Agent.Manager.Client\Elevator.Agent.Manager.Client.csproj", "{186E24BF-5BD5-4EB8-9F41-7024BDDB8AEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{CD673EDC-7B6B-45F5-AAD5-85DF5C40280B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD673EDC-7B6B-45F5-AAD5-85DF5C40280B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD673EDC-7B6B-45F5-AAD5-85DF5C40280B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186E24BF-5BD5-4EB8-9F41-7024BDDB8AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186E24BF-5BD5-4EB8-9F41-7024BDDB8AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186E24BF-5BD5-4EB8-9F41-7024BDDB8AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186E24BF-5BD5-4EB8-9F41-7024BDDB8AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,5 +9,6 @@ namespace Elevator.Api.Services.Interfaces
     {
         Task<List<BuildConfig>> GetAllFromProjectAsync(Guid projectId);
         Task<BuildConfig> CreateAsync(BuildConfig buildConfig);
+        Task<Build> RunAsync(Guid id, string userId);
     }
 }

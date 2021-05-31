@@ -71,5 +71,18 @@ namespace Elevator.Api.Controllers
 
             return HttpOperationResult<BuildConfigDto>.Ok(result);
         }
+
+        [HttpPost("projects/{projectId:guid}/buildConfigs/{id:guid}/run")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<HttpOperationResult<BuildDto>> RunAsync([FromRoute] Guid id)
+        {
+            logger.LogInformation($"Start execution method '{nameof(RunAsync)}'");
+            logger.LogInformation($"BuildConfigId='{id}'");
+
+            var build = await buildConfigService.RunAsync(id, CurrentUser.Id);
+
+            var dtoModel = ModelsMapper.ConvertBuildServiceModelToDto(build);
+            return HttpOperationResult<BuildDto>.Ok(dtoModel);
+        }
     }
 }
