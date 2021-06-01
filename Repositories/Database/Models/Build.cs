@@ -14,5 +14,6 @@ namespace Repositories.Database.Models
         public DateTime? FinishTime { get; set; }
         public BuildStatus BuildStatus { get; set; }
         public string StartedByUserId { get; set; }
+        public DateTime StartTime { get; set; }
     }
 }

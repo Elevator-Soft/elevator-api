@@ -85,7 +85,9 @@ namespace Elevator.Api.Utils.Mapper
             BuildConfigId = dbBuild.BuildConfigId,
             BuildStatus = dbBuild.BuildStatus,
             Logs = dbBuild.Logs,
-            FinishTime = dbBuild.FinishTime
+            FinishTime = dbBuild.FinishTime,
+            StartedByUserId = dbBuild.StartedByUserId,
+            StartTime = dbBuild.StartTime
         };
 
         public static Repositories.Database.Models.Build ConvertBuildServiceModelToDbModel(Build build) => new Repositories.Database.Models.Build
@@ -94,7 +96,9 @@ namespace Elevator.Api.Utils.Mapper
             BuildConfigId = build.BuildConfigId,
             BuildStatus = build.BuildStatus,
             Logs = build.Logs,
-            FinishTime = build.FinishTime
+            FinishTime = build.FinishTime,
+            StartedByUserId = build.StartedByUserId,
+            StartTime = build.StartTime
         };
 
         public static BuildDto ConvertBuildServiceModelToDto(Build build) => new BuildDto

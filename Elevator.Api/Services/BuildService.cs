@@ -30,7 +30,9 @@ namespace Elevator.Api.Services
         public async Task<Build> GetLastBuildAsync(Guid buildConfigId)
         {
             var allBuilds = await buildRepository.GetAllFromBuildConfigAsync(buildConfigId);
-            return ModelsMapper.ConvertBuildDbModelToServiceModel(allBuilds.OrderByDescending(x => x.FinishTime).FirstOrDefault());
+            if (allBuilds.Any(b => b.FinishTime == null))
+                return ModelsMapper.ConvertBuildDbModelToServiceModel(allBuilds.First(b => b.FinishTime == null));
+            return ModelsMapper.ConvertBuildDbModelToServiceModel(allBuilds.OrderByDescending(b => b.StartTime).FirstOrDefault());
         }
 
         public async Task<Build> GetByIdAsync(Guid buildConfigId, Guid buildId)
