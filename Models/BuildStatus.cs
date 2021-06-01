@@ -1,8 +1,5 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Models
+﻿namespace Models
 {
-    [Newtonsoft.Json.JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BuildStatus
     {
         WaitingToGetPlaceInQueue,
