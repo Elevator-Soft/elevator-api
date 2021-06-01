@@ -1,11 +1,16 @@
 ﻿using System.Net;
+using Newtonsoft.Json;
 
 namespace Common
 {
+    [JsonObject]
     public class VoidOperationResult
     {
-        public bool IsSuccessful { get; protected init; } = true;
-        public string Error { get; protected init; }
+        [JsonProperty]
+        public bool IsSuccessful { get; set; } = true;
+
+        [JsonProperty]
+        public string Error { get; set; }
 
         public static VoidOperationResult Success() => new()
         { };
@@ -17,9 +22,11 @@ namespace Common
         };
     }
 
+    [JsonObject]
     public class HttpVoidOperationResult: VoidOperationResult
     {
-        public HttpStatusCode HttpStatusCode { get; private init; }
+        [JsonProperty]
+        public HttpStatusCode HttpStatusCode { get; set; }
 
         public static HttpVoidOperationResult CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) =>
             new()

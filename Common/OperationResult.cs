@@ -1,13 +1,20 @@
 ﻿using System.Net;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Common
 {
+    [JsonObject]
     public class OperationResult<T>
     {
-        public T Value { get; protected init; }
-        public bool IsSuccessful { get; protected init; } = true;
-        public string Error { get; protected init; }
+        [JsonProperty]
+        public T Value { get; set; }
+
+        [JsonProperty]
+        public bool IsSuccessful { get; set; } = true;
+
+        [JsonProperty]
+        public string Error { get; set; }
 
         public static OperationResult<T> Success(T value) => new()
         {
@@ -21,9 +28,11 @@ namespace Common
         };
     }
 
+    [JsonObject]
     public class HttpOperationResult<T> : OperationResult<T>
     {
-        public HttpStatusCode HttpStatusCode { get; private init; }
+        [JsonProperty]
+        public HttpStatusCode HttpStatusCode { get; set; }
 
         public static HttpOperationResult<T> CreateBadOperationResult(HttpStatusCode httpStatusCode, string errorMessage) => new()
         {
